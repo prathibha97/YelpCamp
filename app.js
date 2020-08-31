@@ -1,25 +1,23 @@
 const express = require("express");
-const Mongoose = require("mongoose");
 const app = express();
 const bodyParser = require("body-parser");
-const { Mongoose } = require("mongoose");
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
-Mongoose.connect("mongodb://localhost/yelp_camp_2020", {
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/yelp_camp_2020", {
   useNewUrlParser: true,
   useFindAndModify: true,
   useUnifiedTopology: true,
 });
 
 // Mongoose Schema setup
-const campgroundSchema = new Mongoose.Schema({
+const campgroundSchema = new mongoose.Schema({
   name: String,
   image: String,
   decsription: String,
 });
 
-const Campground = Mongoose.model("Campground", campgroundSchema);
+const Campground = mongoose.model("Campground", campgroundSchema);
 
 app.set("view engine", "ejs");
 
@@ -46,8 +44,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/campgrounds", (req, res) => {
-  Campground.findById({}, (err, allCampgrounds) => {
-    if (er) {
+  Campground.find({}, (err, allCampgrounds) => {
+    if (err) {
       console.log(err);
     } else {
       res.render("campgrounds", { campgrounds: allCampgrounds });
