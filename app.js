@@ -1,16 +1,8 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-
+const Campground = require("./models/campgrounds");
 app.use(bodyParser.urlencoded({ extended: true }));
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/yelp_camp_2020", {
-  useNewUrlParser: true,
-  useFindAndModify: true,
-  useUnifiedTopology: true,
-});
-
-
 
 app.set("view engine", "ejs");
 
@@ -55,7 +47,7 @@ app.get("/campgrounds/new", (req, res) => {
 
 // SHOW - show more info on one campground
 app.get("/campgrounds/:id", (req, res) => {
-  Campground.findById(req.params.id, (err, foundCampground) => {
+  Campground.findById(req.params.id).populate('comments').exec((err, foundCampground) => {
     if (err) {
       console.log(err);
     } else {
