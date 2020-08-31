@@ -21,28 +21,11 @@ const Campground = mongoose.model("Campground", campgroundSchema);
 
 app.set("view engine", "ejs");
 
-// let campgrounds = [
-//   {
-//     name: "salmon Creek",
-//     image:
-//       "https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350",
-//   },
-//   {
-//     name: "Granite Hill",
-//     image:
-//       "https://images.pexels.com/photos/1230302/pexels-photo-1230302.jpeg?auto=compress&cs=tinysrgb&h=350",
-//   },
-//   {
-//     name: "Mountain Goats Rest",
-//     image:
-//       "https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350",
-//   },
-// ];
-
 app.get("/", (req, res) => {
   res.render("Landing");
 });
 
+// INDEX - Show all campgrounds
 app.get("/campgrounds", (req, res) => {
   Campground.find({}, (err, allCampgrounds) => {
     if (err) {
@@ -53,6 +36,7 @@ app.get("/campgrounds", (req, res) => {
   });
 });
 
+// CREATE - add new campground toDB
 app.post("/campgrounds", (req, res) => {
   // get data from form and add to camgrounds array
   const name = req.body.name;
@@ -71,8 +55,20 @@ app.post("/campgrounds", (req, res) => {
   });
 });
 
+// NEW - Show form to add new campground
 app.get("/campgrounds/new", (req, res) => {
   res.render("new.ejs");
+});
+
+// SHOW - show more info on one campground
+app.get("/campgrounds/:id", (req, res) => {
+  Campground.findById(req.params.id, (err, foundCampground) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("show", { campground: foundCampground });
+    }
+  });
 });
 
 app.listen("3000", (req, res) => {
