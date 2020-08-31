@@ -10,14 +10,7 @@ mongoose.connect("mongodb://localhost/yelp_camp_2020", {
   useUnifiedTopology: true,
 });
 
-// Mongoose Schema setup
-const campgroundSchema = new mongoose.Schema({
-  name: String,
-  image: String,
-  decsription: String,
-});
 
-const Campground = mongoose.model("Campground", campgroundSchema);
 
 app.set("view engine", "ejs");
 
@@ -31,7 +24,7 @@ app.get("/campgrounds", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.render("campgrounds", { campgrounds: allCampgrounds });
+      res.render("index", { campgrounds: allCampgrounds });
     }
   });
 });
@@ -41,7 +34,7 @@ app.post("/campgrounds", (req, res) => {
   // get data from form and add to camgrounds array
   const name = req.body.name;
   const image = req.body.image;
-  const description = req.body.decsription;
+  const description = req.body.description;
   const newCampground = { name: name, image: image, description: description };
 
   //   create new campground to save to DB
