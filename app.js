@@ -10,6 +10,8 @@ app.get("/", (req, res) => {
   res.render("Landing");
 });
 
+// CAMPGROUND ROUTES
+
 // INDEX - Show all campgrounds
 app.get("/campgrounds", (req, res) => {
   Campground.find({}, (err, allCampgrounds) => {
@@ -42,16 +44,31 @@ app.post("/campgrounds", (req, res) => {
 
 // NEW - Show form to add new campground
 app.get("/campgrounds/new", (req, res) => {
-  res.render("new.ejs");
+  res.render("campgrounds/new");
 });
 
 // SHOW - show more info on one campground
 app.get("/campgrounds/:id", (req, res) => {
-  Campground.findById(req.params.id).populate('comments').exec((err, foundCampground) => {
+  Campground.findById(req.params.id)
+    .populate("comments")
+    .exec((err, foundCampground) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("campgrounds/show", { campground: foundCampground });
+      }
+    });
+});
+
+// COMMENT ROUTES
+
+//add new comment
+app.get("/campgrounds/:id/comments/new", (req, res) => {
+  Campground.findById(req.params.id, (err, campground) => {
     if (err) {
       console.log(err);
     } else {
-      res.render("show", { campground: foundCampground });
+      res.render("comments/new", { campground });
     }
   });
 });
