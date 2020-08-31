@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const Campground = require("./models/campgrounds");
-const Comment = require('./models/comment');
+const Comment = require("./models/comment");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs");
@@ -80,21 +80,19 @@ app.post("/campgrounds/:id/comments", (req, res) => {
     if (err) {
       console.log(err);
       res.redirect("/campgrounds");
-    }
-    else{
+    } else {
       // create new comment
-      Comment.create(req.body.comment, (err, comment)=>{
-        if(err){
-          console.log(err)
-        }
-        else{
+      Comment.create(req.body.comment, (err, comment) => {
+        if (err) {
+          console.log(err);
+        } else {
           // connect new comment to campground
           campground.comments.push(comment);
           campground.save();
           // redirect to campground show page
-          res.redirect('/campgrounds/' + campground.id);
+          res.redirect("/campgrounds/" + campground.id);
         }
-      })
+      });
     }
   });
 });
