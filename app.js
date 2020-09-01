@@ -7,7 +7,7 @@ const User = require("./models/user");
 const campgroundRoutes = require("./routes/campgrounds");
 const commentRoutes = require("./routes/comments");
 const indexRoutes = require("./routes/index");
-
+const methodOverride = require('method-override');
 // passport config
 app.use(
   require("express-session")({
@@ -28,7 +28,7 @@ app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
   next();
 });
-
+app.use(methodOverride('_method'));
 app.set("view engine", "ejs");
 
 app.use("/", indexRoutes);
