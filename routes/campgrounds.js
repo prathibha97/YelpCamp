@@ -21,7 +21,11 @@ router.post("/", isLoggedIn, (req, res) => {
   const name = req.body.name;
   const image = req.body.image;
   const description = req.body.description;
-  const newCampground = { name: name, image: image, description: description };
+  const author = {
+    id:req.user._id,
+    username:req.user.username,
+  };
+  const newCampground = { name: name, image: image, description: description, author:author};
 
   //   create new campground to save to DB
   Campground.create(newCampground, (err, newlyCreated) => {
