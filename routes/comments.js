@@ -47,7 +47,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 });
 
 // Commment EDIT
-router.get("/:comment_id/edit", (req, res) => {
+router.get("/:comment_id/edit",middleware.checkCampgroundOwnership, (req, res) => {
   Comment.findById(req.params.comment_id, (err, foundComment) => {
     if (err) {
       res.redirect("back");
@@ -61,7 +61,7 @@ router.get("/:comment_id/edit", (req, res) => {
 });
 
 // Comment UPDATE
-router.put("/:comment_id", (req, res) => {
+router.put("/:comment_id",middleware.checkCampgroundOwnership, (req, res) => {
   Comment.findByIdAndUpdate(
     req.params.comment_id,
     req.body.comment,
@@ -76,7 +76,7 @@ router.put("/:comment_id", (req, res) => {
 });
 
 // Comment DESTROY
-router.delete("/:comment_id", (req, res) => {
+router.delete("/:comment_id",middleware.checkCommentOwnership, (req, res) => {
   Comment.findByIdAndRemove(req.params.comment_id, (err) => {
     if (err) {
       res.redirect("back");
