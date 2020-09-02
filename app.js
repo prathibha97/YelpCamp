@@ -8,6 +8,7 @@ const campgroundRoutes = require("./routes/campgrounds");
 const commentRoutes = require("./routes/comments");
 const indexRoutes = require("./routes/index");
 const methodOverride = require('method-override');
+const flash =require('connect-flash');
 // passport config
 app.use(
   require("express-session")({
@@ -24,8 +25,11 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+app.use(flash());
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
   next();
 });
 app.use(methodOverride('_method'));
