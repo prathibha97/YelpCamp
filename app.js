@@ -33,6 +33,7 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(methodOverride('_method'));
+app.locals.moment =require('moment');
 app.set("view engine", "ejs");
 
 app.use("/", indexRoutes);
