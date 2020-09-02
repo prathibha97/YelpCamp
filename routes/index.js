@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user");
-const user = require("../models/user");
 
 router.get("/", (req, res) => {
   res.render("Landing");
